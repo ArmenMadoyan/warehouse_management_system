@@ -28,7 +28,7 @@ The system manages products, inventory, purchases, sales, clients, stores, and u
 ```
 
 - `sql/` folder contains database initialization scripts (DDL, DML, DQL).
-- `streamlit_app.py` provides the full web application frontend.
+- `front.py` provides the full web application frontend.
 - `docker-compose.yml` orchestrates PostgreSQL, pgAdmin, and frontend services.
 
 ---
@@ -53,7 +53,7 @@ The system manages products, inventory, purchases, sales, clients, stores, and u
 
 ### 2. Start the Project
 ```bash
-docker-compose up --build
+docker compose up -d --build
 ```
 
 This command will:
@@ -62,15 +62,7 @@ This command will:
 - Build and launch the Streamlit frontend
 
 ### 3. Initialize Database
-The `sql/ddl.sql` and `sql/dml.sql` scripts will be manually loaded into the PostgreSQL database via pgAdmin, DBeaver, or `psql`.
-
-> ⚡ Important: After inserting users manually, run:
-> ```sql
-> SELECT setval('app_user_user_id_seq', (SELECT MAX(user_id) FROM app_user));
-> ```
-> to fix the auto-increment counter on the `user_id`.
-
----
+The `sql/ddl.sql` and `sql/dml.sql` scripts will be automatically loaded into the PostgreSQL database via Docker.
 
 ## Accessing the Application
 
@@ -103,7 +95,6 @@ Database connection settings (already baked into `docker-compose.yml`):
 
 ## Notes
 
-- **No automatic seeding**: Data must be inserted using SQL scripts.
 - **Fully containerized**: No local installations required beyond Docker.
 - **Modular frontend**: Easy to extend with additional functionalities like order placement, payment processing, inventory forecasting.
 
