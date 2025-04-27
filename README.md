@@ -116,5 +116,5 @@ Database connection settings (already baked into `docker-compose.yml`):
 
 ## Author
 
-> Armen
+> Armen, Aram, Tigran
 
