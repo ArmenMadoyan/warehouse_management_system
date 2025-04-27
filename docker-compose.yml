@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 60s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_database:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d  # <<<<<<✅ Mount sql to initdb.d
+
+  pgadmin:
+    container_name: pgadmin_ui
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - 5055:80
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+  frontend:
+    container_name: frontend_db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8502:8501"
+    volumes:
+      - frontend:/frontend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: "exit 0"
+
+
+volumes:
+  postgres_database:
+  pgadmin_data:
+  frontend:
+
