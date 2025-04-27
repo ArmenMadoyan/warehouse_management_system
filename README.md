@@ -9,8 +9,6 @@ This project implements a **Warehouse Management System (WMS)** using:
 - **Docker Compose** (for service orchestration)
 - **SQLAlchemy** (for database connection)
 
-The system manages products, inventory, purchases, sales, clients, stores, and users. It provides real-time visibility into warehouse operations, revenue, top-selling products, stock levels, and client purchases.
-
 ---
 
 ## Project Structure
@@ -28,6 +26,22 @@ The system manages products, inventory, purchases, sales, clients, stores, and u
 ```
 
 - `sql/` folder contains database initialization scripts (DDL, DML, DQL).
+
+1. DDL Script
+We designed the full database schema by creating all necessary tables, such as product, warehouse, inventory, client, sale_order, and others. We also added DROP TABLE IF EXISTS statements to ensure the script can be rerun safely without manual cleanup.
+
+
+2. DML Script
+We populated the system with initial sample data for products, warehouses, inventory levels, users, clients, purchases, sales, and payments. To make reruns smooth, we included a TRUNCATE TABLE statement that resets the data while preserving database integrity.
+
+
+3. DQL Script
+We implemented queries, views, and PL/pgSQL functions to perform real operations on the data, such as user registration, authentication, product management, inventory updates, order processing, and generating detailed reports like top-selling products, monthly revenue, inventory health, and client histories.
+
+
+The system manages products, inventory, purchases, sales, clients, stores, and users. It provides real-time visibility into warehouse operations, revenue, top-selling products, stock levels, and client purchases.
+
+
 - `front.py` provides the full web application frontend.
 - `docker-compose.yml` orchestrates PostgreSQL, pgAdmin, and frontend services.
 
